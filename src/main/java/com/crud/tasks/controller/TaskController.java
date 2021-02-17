@@ -1,28 +1,38 @@
 package com.crud.tasks.controller;
 
+import com.crud.tasks.domain.Task;
 import com.crud.tasks.domain.TaskDto;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.crud.tasks.mapper.TaskMapper;
+import com.crud.tasks.service.DbService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/task")
 public class TaskController {
+    private final DbService service;
+    private final TaskMapper mapper;
+
+    public TaskController(DbService service, TaskMapper mapper) {
+        this.service = service;
+        this.mapper = mapper;
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "getTasks")
 //    @GetMapping(value = "getTasks")
     public List<TaskDto> getTasks() {
-        return new ArrayList<>();
+        List<Task> tasks = service.getAllTasks();
+        return mapper.mapToTaskDtoList(tasks);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "getTask")
     public TaskDto getTask(Long taskId) {
-        return new TaskDto(1L, "test title", "test_content");
+        List<Long> tasksId = service.getTaskId();
+        return mapper.mapToTaskIdList(tasksId);
     }
-
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask")
     public void deleteTask(Long taskId) {
 
