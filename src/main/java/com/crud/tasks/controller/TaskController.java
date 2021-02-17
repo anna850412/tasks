@@ -4,6 +4,8 @@ import com.crud.tasks.domain.Task;
 import com.crud.tasks.domain.TaskDto;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,9 +31,9 @@ public class TaskController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "getTask")
-    public TaskDto getTask(Long taskId) {
-        List<Long> tasksId = service.getTaskId();
-        return mapper.mapToTaskIdList(tasksId);
+    public List<TaskDto> getTask(Long taskId) {
+        List<Task> tasksId = service.getTaskId();
+        return mapper.mapToTaskIdTask(tasksId);
     }
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask")
     public void deleteTask(Long taskId) {
@@ -43,8 +45,10 @@ public class TaskController {
         return new TaskDto(1L, "Edited test title", "Test content");
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "createTask")
-    public void createTask(TaskDto taskDto) {
+    @RequestMapping(method = RequestMethod.POST, value = "createTask", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void createTask(@RequestBody TaskDto taskDto) {
+        Task task = mapper.mapToTask(taskDto);
+        service.saveTask(task);
 
     }
 }

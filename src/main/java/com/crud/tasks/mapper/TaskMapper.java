@@ -33,4 +33,12 @@ public class TaskMapper {
                 .map(n->n.longValue())
                 .collect(Collectors.toList());
     }
+//    public TaskDto mapToTaskId(final Long taskId){
+//        return taskId;
+//    }
+    public List<TaskDto> mapToTaskIdTask(final List<Task> taskId){
+        return taskId.stream()
+                .map(this::mapToTaskDto)
+                .collect(Collectors.toList());
+    }
 }
