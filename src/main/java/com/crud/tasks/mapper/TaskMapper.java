@@ -5,6 +5,7 @@ import com.crud.tasks.domain.TaskDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,17 +29,9 @@ public class TaskMapper {
                 .map(this::mapToTaskDto)
                 .collect(Collectors.toList());
     }
-    public List<Long> mapToTaskIdList(final List<Long> tasksId){
-        return tasksId.stream()
-                .map(n->n.longValue())
-                .collect(Collectors.toList());
-    }
-//    public TaskDto mapToTaskId(final Long taskId){
-//        return taskId;
+//    public List<TaskDto> mapToTaskId(final Optional<Task> taskId){
+//        return   taskId.stream()
+//                .map(this::mapToTaskDto)
+//                .collect(Collectors.toList());
 //    }
-    public List<TaskDto> mapToTaskIdTask(final List<Task> taskId){
-        return taskId.stream()
-                .map(this::mapToTaskDto)
-                .collect(Collectors.toList());
-    }
 }
