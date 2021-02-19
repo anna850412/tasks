@@ -13,7 +13,6 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "tasks")
-
 public class Task {
     @Id
     @GeneratedValue
