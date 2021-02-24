@@ -24,13 +24,22 @@ public class TaskController {
         return mapper.mapToTaskDtoList(tasks);
     }
 
+    @GetMapping(value = "findByTitle")
+    public List<Task> findTaskByTitle(@RequestParam String name){
+        List<Task> titledTasks = service.findTaskByTitle(name);
+       return titledTasks;
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "getTask")
     public TaskDto getTask(@RequestParam Long taskId) throws TaskNotFoundException {
         return mapper.mapToTaskDto(
                 service.getTask(taskId).orElseThrow(TaskNotFoundException::new)
         );
     }
-
+    @DeleteMapping(value = "deleteByContent")
+    public void deleteTaskByContent(@RequestParam String description){
+        service.deleteTaskByContent(description);
+    }
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask")
     public void deleteTask(@RequestParam Long taskId) {
         service.deleteTaskById(taskId);

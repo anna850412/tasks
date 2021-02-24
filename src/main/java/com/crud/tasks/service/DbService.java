@@ -29,4 +29,10 @@ public class DbService {
     public void deleteTaskById(final Long taskId) {
         repository.deleteById(taskId);
     }
+    public void deleteTaskByContent(final String description){
+        repository.deleteByContent(description);
+    }
+    public List<Task> findTaskByTitle(final String name){
+        return repository.findByTitle(name);
+    }
 }
