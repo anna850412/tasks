@@ -11,6 +11,6 @@ import java.util.List;
 public class BadgesDto {
     @JsonProperty("votes")
     private String votes;
-    @JsonProperty("attachmentsByTypeLists")
-    private List<AttachmentByTypeDto> attachmentByTypeLists;
+    @JsonProperty("attachmentsByType")
+    private List<AttachmentByTypeDto> attachmentByType;
 }

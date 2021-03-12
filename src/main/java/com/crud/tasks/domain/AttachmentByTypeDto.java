@@ -9,6 +9,6 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AttachmentByTypeDto {
-    @JsonProperty("trelloLists")
-    private List<TrelloDto> trelloLists;
+    @JsonProperty("trello")
+    private List<TrelloDto> trello;
 }

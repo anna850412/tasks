@@ -39,7 +39,7 @@ class TrelloClientTest {
         when(trelloConfig.getTrelloApiEndpoint()).thenReturn("http://test.com");
         when(trelloConfig.getTrelloAppKey()).thenReturn("test");
         when(trelloConfig.getTrelloToken()).thenReturn("test");
-        when(trelloConfig.getTrelloUser()).thenReturn("test");
+//        when(trelloConfig.getTrelloUser()).thenReturn("test");
 
         TrelloBoardDto[] trelloBoards = new TrelloBoardDto[1];
         trelloBoards[0] = new TrelloBoardDto("test_id", "test_board", new ArrayList<>());
@@ -73,7 +73,8 @@ class TrelloClientTest {
         CreatedTrelloCard createdTrelloCard = new CreatedTrelloCard(
                 "1",
                 "test task",
-                "http://test.com"
+                "http://test.com",
+                null
         );
         when(restTemplate.postForObject(uri, null, CreatedTrelloCard.class)).thenReturn(createdTrelloCard);
         // When
@@ -92,18 +93,17 @@ class TrelloClientTest {
         when(trelloConfig.getTrelloToken()).thenReturn("test");
         when(trelloConfig.getTrelloUser()).thenReturn("test");
 
-        TrelloBoardDto[] trelloBoards = new TrelloBoardDto[0];
-        trelloBoards[0] = new TrelloBoardDto("test_id", "test_board", new ArrayList<>());
+        TrelloBoardDto[] trelloBoards = new TrelloBoardDto[1];
+       trelloBoards[0] = new TrelloBoardDto("test_id", "test_board", new ArrayList<>());
         URI uri = new URI("http://test.com/members/test/boards?key=test&token=test&fields=name,id&lists=all");
-//        when(restTemplate.getForObject(uri, TrelloBoardDto[].class)).thenReturn(new ArrayList<>());
         TrelloBoardDto boardsResponse = restTemplate.getForObject(uri, TrelloBoardDto.class);
+        when(restTemplate.getForObject(uri, TrelloBoardDto[].class)).thenReturn(null);
 
         //When
-        List<TrelloBoardDto> emptyList = new ArrayList<>();
-        TrelloBoardDto emptyList2 = restTemplate.getForObject(uri,TrelloBoardDto.class);
+
+        List<TrelloBoardDto> emptyList2 = trelloClient.getTrelloBoards();
         //Then
-        assertEquals(0, emptyList.size());
-        assertEquals(0, emptyList2.getLists().size());
+        assertEquals(0, emptyList2.size());
 
     }
 
