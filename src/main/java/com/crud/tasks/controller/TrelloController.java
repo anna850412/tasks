@@ -18,7 +18,7 @@ public class TrelloController {
 
     @GetMapping("getTrelloBoards")
     public List<TrelloBoardDto> getTrelloBoards() {
-        getTrelloBoards().stream()
+        trelloClient.getTrelloBoards().stream()
                 .filter(p -> Objects.nonNull(p.getId()) && Objects.nonNull(p.getName()))
                 .filter(p -> p.getName().contains("Kodilla"))
                 .collect(Collectors.toList());
