@@ -16,10 +16,11 @@ class MailTest {
                 .toCc("second")
                 .toCc("third")
                 .build();
+        System.out.println(mail);
         //When
-
+        int howManyCc = mail.getToCcs().size();
         //Then
-
+        assertEquals(3, howManyCc);
     }
 
 }
