@@ -23,13 +23,6 @@ public class TrelloController {
         return trelloService.fetchTrelloBoards();
     }
 
-    //    @GetMapping("getTrelloBoardWithUsername")
-//    public void getTrelloBoardWithUsername(){
-//        List<TrelloBoardDto> trelloBoardsWithUsername = trelloClient.getTrelloBoardWithUsername();
-//        trelloBoardsWithUsername.forEach(trelloBoardDto -> {
-//            System.out.println(trelloBoardDto.getId() + "" + trelloBoardDto.getName());
-//        });
-//    }
     @PostMapping("createTrelloCard")
     public CreatedTrelloCard createdTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
         return trelloService.createTrelloCard(trelloCardDto);
@@ -37,5 +30,12 @@ public class TrelloController {
 //    @PostMapping("createTrelloCardWithBadges")
 //    public CreatedTrelloCardWithBadges createdTrelloCardWithBadges(@RequestBody TrelloCardDtoWithBadges trelloCardDtoWithBadges){
 //        return trelloClient.createNewCardWithBadges(trelloCardDtoWithBadges);
+//    }
+    //    @GetMapping("getTrelloBoardWithUsername")
+//    public void getTrelloBoardWithUsername(){
+//        List<TrelloBoardDto> trelloBoardsWithUsername = trelloClient.getTrelloBoardWithUsername();
+//        trelloBoardsWithUsername.forEach(trelloBoardDto -> {
+//            System.out.println(trelloBoardDto.getId() + "" + trelloBoardDto.getName());
+//        });
 //    }
 }

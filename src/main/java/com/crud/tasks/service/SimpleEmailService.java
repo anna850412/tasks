@@ -25,6 +25,7 @@ public class SimpleEmailService {
 
         try {
             SimpleMailMessage mailMessage = createMailMessage(mail);
+//            ofNullable(mailMessage.getCc()).ifPresent(cc->mail.getMailTo());
             javaMailSender.send(mailMessage);
             log.info("Email has been sent.");
         } catch (MailException e) {
@@ -32,26 +33,27 @@ public class SimpleEmailService {
         }
     }
 
-    private  SimpleMailMessage createMailMessage(final Mail mail) {
+    private SimpleMailMessage createMailMessage(final Mail mail) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-//        try {
-                            mailMessage.setTo(mail.getMailTo());
-                            mailMessage.setSubject(mail.getSubject());
-                            mailMessage.setText(mail.getMessage());
-//                            mailMessage.setCc(mail.getToCcs().get(0));
+        try {
+            mailMessage.setTo(mail.getMailTo());
+            mailMessage.setSubject(mail.getSubject());
+            mailMessage.setText(mail.getMessage());
+            mailMessage.setCc(String.valueOf(mail.getToCcs()));
 
-//            return
-//                Optional.ofNullable(mail.getToCc())
-//                    (SimpleMailMessage) ofNullable(mailMessage.getCc())
+            return
+                                  mailMessage;
+//                   ofNullable(mailMessage.getCc()).ifPresent(cc->mail.getMailTo());
+
+//                    (SimpleMailMessage) Optional.ofNullable(mailMessage.getCc())
 //                            .map(Arrays::asList)
 //                            .orElse(Collections.singletonList(mail.getMailTo()));
-//
-//        } catch (MailException e) {
-//            log.error("Failed to process Mail Message creation: " + e.getMessage(), e);
-//        }
+
+
+        } catch (MailException e) {
+            log.error("Failed to process Mail Message creation: " + e.getMessage(), e);
+        }
 
         return mailMessage;
     }
-
-
 }

@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,13 +27,14 @@ class SimpleEmailServiceTest {
     void shouldSendEmail(){
         //Given
         Mail mail = new Mail("test@test.com", "Test", "Test Message"
-//                , List.of("Mail Address")
+                , Collections.singletonList("to cc")
                );
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
         mailMessage.setSubject(mail.getSubject());
         mailMessage.setText(mail.getMessage());
+        mailMessage.setCc(String.valueOf(mail.getToCcs()));
         //When
         simpleEmailService.send(mail);
         //Then

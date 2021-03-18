@@ -14,14 +14,14 @@ public class Mail {
     private final String mailTo;
     private final String subject;
     private final String message;
-//    private List<String> toCcs = new ArrayList<>();
+    private List<String> toCcs = new ArrayList<>();
 
 
     static class MailBuilder {
         private String mailTo;
         private String subject;
         private String message;
-//        private List<String> toCcs = new ArrayList<>();
+        private List<String> toCcs = new ArrayList<>();
 
         public MailBuilder mailTo(String mailTo) {
             this.mailTo = mailTo;
@@ -38,14 +38,14 @@ public class Mail {
             return this;
         }
 
-//        public MailBuilder toCc(String toCc) {
-//            toCcs.add(toCc);
-//            return this;
-//        }
+        public MailBuilder toCc(String toCc) {
+            toCcs.add(toCc);
+            return this;
+        }
 
         public Mail build() {
             return new Mail(mailTo, subject, message
-//                    , toCcs
+                    , toCcs
             );
         }
     }
