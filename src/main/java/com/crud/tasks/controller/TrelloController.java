@@ -1,6 +1,7 @@
 package com.crud.tasks.controller;
 
 import com.crud.tasks.domain.*;
+import com.crud.tasks.service.TrelloService;
 import com.crud.tasks.trello.client.TrelloClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,16 +16,11 @@ import java.util.stream.Collectors;
 @CrossOrigin("*")
 public class TrelloController {
 
-    private final TrelloClient trelloClient;
+    private final TrelloService trelloService;
 
     @GetMapping("getTrelloBoards")
     public List<TrelloBoardDto> getTrelloBoards() {
-        trelloClient.getTrelloBoards().stream()
-                .filter(p -> Objects.nonNull(p.getId()) && Objects.nonNull(p.getName()))
-                .filter(p -> p.getName().contains("Kodilla"))
-                .collect(Collectors.toList());
-
-        return trelloClient.getTrelloBoards();
+        return trelloService.fetchTrelloBoards();
     }
 
     //    @GetMapping("getTrelloBoardWithUsername")
@@ -36,7 +32,7 @@ public class TrelloController {
 //    }
     @PostMapping("createTrelloCard")
     public CreatedTrelloCard createdTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
-        return trelloClient.createNewCard(trelloCardDto);
+        return trelloService.createTrelloCard(trelloCardDto);
     }
 //    @PostMapping("createTrelloCardWithBadges")
 //    public CreatedTrelloCardWithBadges createdTrelloCardWithBadges(@RequestBody TrelloCardDtoWithBadges trelloCardDtoWithBadges){
