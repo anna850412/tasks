@@ -26,6 +26,9 @@ public class SimpleEmailService {
         try {
             SimpleMailMessage mailMessage = createMailMessage(mail);
 //            ofNullable(mailMessage.getCc()).ifPresent(cc->mail.getMailTo());
+            System.out.println(mail);
+            System.out.println(mailMessage);
+
             javaMailSender.send(mailMessage);
             log.info("Email has been sent.");
         } catch (MailException e) {
@@ -39,10 +42,12 @@ public class SimpleEmailService {
             mailMessage.setTo(mail.getMailTo());
             mailMessage.setSubject(mail.getSubject());
             mailMessage.setText(mail.getMessage());
-            mailMessage.setCc(String.valueOf(mail.getToCcs()));
+            if (mail.getToCcs() != null && !mail.getToCcs().isEmpty()) {
+                mailMessage.setCc(String.valueOf(mail.getToCcs()));
+            }
 
             return
-                                  mailMessage;
+                    mailMessage;
 //                   ofNullable(mailMessage.getCc()).ifPresent(cc->mail.getMailTo());
 
 //                    (SimpleMailMessage) Optional.ofNullable(mailMessage.getCc())
