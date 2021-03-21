@@ -8,12 +8,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Optional;
-
-import static java.util.Optional.ofNullable;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -25,10 +19,6 @@ public class SimpleEmailService {
 
         try {
             SimpleMailMessage mailMessage = createMailMessage(mail);
-//            ofNullable(mailMessage.getCc()).ifPresent(cc->mail.getMailTo());
-            System.out.println(mail);
-            System.out.println(mailMessage);
-
             javaMailSender.send(mailMessage);
             log.info("Email has been sent.");
         } catch (MailException e) {
@@ -46,14 +36,7 @@ public class SimpleEmailService {
                 mailMessage.setCc(String.valueOf(mail.getToCcs()));
             }
 
-            return
-                    mailMessage;
-//                   ofNullable(mailMessage.getCc()).ifPresent(cc->mail.getMailTo());
-
-//                    (SimpleMailMessage) Optional.ofNullable(mailMessage.getCc())
-//                            .map(Arrays::asList)
-//                            .orElse(Collections.singletonList(mail.getMailTo()));
-
+            return mailMessage;
 
         } catch (MailException e) {
             log.error("Failed to process Mail Message creation: " + e.getMessage(), e);
