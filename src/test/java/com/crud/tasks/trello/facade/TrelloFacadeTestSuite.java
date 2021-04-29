@@ -6,7 +6,6 @@ import com.crud.tasks.service.TrelloService;
 import com.crud.tasks.trello.validator.TrelloValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -79,13 +79,20 @@ public class TrelloFacadeTestSuite {
         when(trelloService.createTrelloCard(trelloCardDto)).thenReturn(createdTrelloCardDto);
         when(trelloMapper.mapToCard(trelloCardDto)).thenReturn(trelloCard);
         when(trelloMapper.mapToCardDto(trelloCard)).thenReturn(trelloCardDto);
-//        when(trelloValidator.validateCard(trelloCard)).thenReturn(any());
+        doNothing().when(trelloValidator).validateCard(any(TrelloCard.class));
         //When
         CreatedTrelloCardDto card = trelloFacade.createCard(trelloCardDto);
         //Then
         assertThat(card).isNotNull();
         assertEquals("name", card.getName());
+        assertEquals("nameDto", trelloCardDto.getName());
+        assertEquals("1", card.getId());
         assertEquals("url", card.getShortUrl());
+        assertEquals("votes", card.getBadges().getVotes());
+        assertEquals(attachmentByType, card.getBadges().getAttachmentByType());
+        assertEquals("board", card.getBadges().getAttachmentByType().getTrello().getBoard());
+        assertEquals("card", card.getBadges().getAttachmentByType().getTrello().getCard());
+
         assertEquals(badges, card.getBadges());
 
     }
