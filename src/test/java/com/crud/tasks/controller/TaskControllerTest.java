@@ -56,5 +56,18 @@ class TaskControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content", Matchers.is("Content2")));
 
     }
+    @Test
+    void testFindTaskByTitle() throws Exception {
+    //Given
+
+    //When&Then
+
+    }
+    @Test
+    void testGetTask() throws TaskNotFoundException {
+    //Given
+
+    //When&Then
+    }
 
 }
