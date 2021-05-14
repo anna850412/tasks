@@ -3,6 +3,7 @@ package com.crud.tasks.controller;
 import com.crud.tasks.domain.Task;
 import com.crud.tasks.domain.TaskDto;
 import com.crud.tasks.mapper.TaskMapper;
+import com.crud.tasks.repository.TaskRepository;
 import com.crud.tasks.service.DbService;
 import com.google.gson.Gson;
 import org.hamcrest.Matchers;
@@ -16,7 +17,6 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +52,9 @@ class TaskControllerTest {
                 .content(jsonContent))
                 .andExpect(status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1L)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("Title1")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content", Matchers.is("Content1")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id", Matchers.is(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title", Matchers.is("Title1")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].content", Matchers.is("Content1")));
     }
 
     @Test
@@ -93,24 +93,27 @@ class TaskControllerTest {
         // When & Then
         mockMvc
                 .perform(MockMvcRequestBuilders
-                        .delete("/v1/task/deleteTask?description=Content")
+                        .delete("/v1/task/deleteByContent?description=Content")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void testFindTaskByTitle() throws Exception {
+    void testFindTasksByTitle() throws Exception {
         //Given
         List<Task> taskList = new ArrayList<>();
         Task task = new Task(1L, "Title", "Content");
+        Task task2 = new Task(2L, "Title2", "Content2");
         taskList.add(task);
-        Task savedTask = service.saveTask(task);
-        when(service.findTaskByTitle(savedTask.getTitle())).thenReturn(taskList);
+        taskList.add(task2);
+
+     //   Mockito.when(service.saveTask(task)).thenReturn(task);
+        when(service.findTasksByTitle(task.getTitle())).thenReturn(taskList);
         //When&Then
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/v1/task/findByTitle?name=Title")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("Title")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title", Matchers.is("Title")));
     }
     @Test
     public void testCreateTask() throws Exception{

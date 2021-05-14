@@ -32,7 +32,7 @@ public class DbService {
     public void deleteTaskByContent(final String description){
         repository.deleteByContent(description);
     }
-    public List<Task> findTaskByTitle(final String name){
+    public List<Task> findTasksByTitle(final String name){
         return repository.findByTitle(name);
     }
 }

@@ -27,7 +27,7 @@ public class TaskController {
 
     @GetMapping(value = "findByTitle")
     public List<Task> findTaskByTitle(@RequestParam String name){
-        List<Task> titledTasks = service.findTaskByTitle(name);
+        List<Task> titledTasks = service.findTasksByTitle(name);
        return titledTasks;
     }
 
