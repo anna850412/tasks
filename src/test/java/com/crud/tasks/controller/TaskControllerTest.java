@@ -32,7 +32,7 @@ class TaskControllerTest {
     private DbService service;
     @MockBean
     private TaskMapper taskMapper;
-@Disabled
+
     @Test
     void testGetAllTasks() throws Exception {
         //Given
