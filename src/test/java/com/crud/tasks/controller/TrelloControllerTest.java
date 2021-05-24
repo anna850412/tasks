@@ -34,7 +34,7 @@ class TrelloControllerTest {
         //When & Then
         mockMvc
                 .perform(MockMvcRequestBuilders
-                        .get("/v1/trello/getTrelloBoards")
+                        .get("/v1/trello/boards")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(0)));
@@ -51,7 +51,7 @@ class TrelloControllerTest {
         //When&Then
         mockMvc
                 .perform(MockMvcRequestBuilders
-                        .get("/v1/trello/getTrelloBoards")
+                        .get("/v1/trello/boards")
                         .contentType(MediaType.APPLICATION_JSON))
                 // Trello board fields
                 .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(1)))
@@ -81,7 +81,7 @@ class TrelloControllerTest {
         //When&Then
         mockMvc
                 .perform(MockMvcRequestBuilders
-                        .post("/v1/trello/createTrelloCard")
+                        .post("/v1/trello/cards")
                         .characterEncoding("UTF-8")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))

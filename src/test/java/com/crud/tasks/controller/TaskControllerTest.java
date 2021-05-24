@@ -47,7 +47,7 @@ class TaskControllerTest {
         String jsonContent = gson.toJson(taskList);
         //When&Then
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/v1/task/getTasks")
+                .get("/v1/tasks")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContent))
                 .andExpect(status().is(200))
@@ -66,7 +66,7 @@ class TaskControllerTest {
         when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
         //When&Then
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/v1/task/getTask?taskId=1")
+                .get("/v1/tasks/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("TitleDto")))
@@ -78,7 +78,7 @@ class TaskControllerTest {
         //Given, When & Then
         mockMvc
                 .perform(MockMvcRequestBuilders
-                        .delete("/v1/task/deleteTask?taskId=1")
+                        .delete("/v1/tasks/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -93,7 +93,7 @@ class TaskControllerTest {
         // When & Then
         mockMvc
                 .perform(MockMvcRequestBuilders
-                        .delete("/v1/task/deleteByContent?description=Content")
+                        .delete("/v1/deleteByContent?description=Content")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -111,7 +111,7 @@ class TaskControllerTest {
         when(service.findTasksByTitle(task.getTitle())).thenReturn(taskList);
         //When&Then
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/v1/task/findByTitle?name=Title")
+                .get("/v1/findByTitle?name=Title")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].title", Matchers.is("Title")));
     }
@@ -125,7 +125,7 @@ class TaskControllerTest {
         String jsonContent = gson.toJson(createdTaskDto);
         //When&Then
         mockMvc.perform(MockMvcRequestBuilders
-        .post("/v1/task/createTask/")
+        .post("/v1/tasks")
         .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContent))
                 .andExpect(status().is(200));
@@ -143,7 +143,7 @@ class TaskControllerTest {
         String jsonContent = gson.toJson(updatedTaskDto);
         //When&Then
         mockMvc.perform(MockMvcRequestBuilders
-        .put("/v1/task/updateTask/")
+        .put("/v1/tasks")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
