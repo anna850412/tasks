@@ -22,28 +22,30 @@ public class TaskMapperTestSuite {
     @Test
     public void testMapToTask() {
         //Given
-         TaskMapper taskMapper = new TaskMapper();
+        TaskMapper taskMapper = new TaskMapper();
         TaskDto taskDto = new TaskDto(1L, "Title", "content");
         //When
         Task mappedTask = taskMapper.mapToTask(taskDto);
         //Then
         assertEquals(1L, mappedTask.getId());
     }
+
     @Test
-    public void testMapToTaskDto(){
+    public void testMapToTaskDto() {
         //Given
         TaskMapper taskMapper = new TaskMapper();
-        Task task = new Task(1L,"TitleTask", "ContentTask");
+        Task task = new Task(1L, "TitleTask", "ContentTask");
         //When
         TaskDto mappedTaskDto = taskMapper.mapToTaskDto(task);
         //Then
         assertEquals("TitleTask", mappedTaskDto.getTitle());
     }
+
     @Test
-    public void testMapToTaskDtoList(){
+    public void testMapToTaskDtoList() {
         //Given
         TaskMapper taskMapper = new TaskMapper();
-        Task task = new Task(1L,"TitleTask", "ContentTask");
+        Task task = new Task(1L, "TitleTask", "ContentTask");
         List<Task> taskList = new ArrayList<>();
         taskList.add(task);
         //When
