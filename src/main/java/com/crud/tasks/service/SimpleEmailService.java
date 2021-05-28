@@ -23,7 +23,6 @@ public class SimpleEmailService {
         log.info("Starting email preparation...");
 
         try {
-            SimpleMailMessage mailMessage = createMailMessage(mail);
             javaMailSender.send(createMimeMessage(mail));
             log.info("Email has been sent.");
         } catch (MailException e) {
@@ -35,18 +34,20 @@ public class SimpleEmailService {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
+//            messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
+            messageHelper.setText(mailCreatorService.buildTaskQuantityEmail(mail.getMessage()), true);
         };
     }
 
 
-    private SimpleMailMessage createMailMessage(final Mail mail) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(mail.getMailTo());
-        mailMessage.setSubject(mail.getSubject());
-        mailMessage.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()));
-        return mailMessage;
-    }
+//    private SimpleMailMessage createMailMessage(final Mail mail) {
+//        SimpleMailMessage mailMessage = new SimpleMailMessage();
+//        mailMessage.setTo(mail.getMailTo());
+//        mailMessage.setSubject(mail.getSubject());
+//        mailMessage.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()));
+//        mailMessage.setText(mailCreatorService.buildTaskQuantityEmail(mail.getMessage()));
+//        return mailMessage;
+//    }
 
 //    private SimpleMailMessage createMailMessage(final Mail mail) {
 //        SimpleMailMessage mailMessage = new SimpleMailMessage();
