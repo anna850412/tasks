@@ -2,6 +2,7 @@ package com.crud.tasks.service;
 
 import com.crud.tasks.config.AdminConfig;
 import com.crud.tasks.config.CompanyInfo;
+import com.crud.tasks.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,8 @@ public class MailCreatorService {
     private AdminConfig adminConfig;
     @Autowired
     private CompanyInfo companyInfo;
-
+    @Autowired
+    private TaskRepository repository;
     @Autowired
     @Qualifier("templateEngine")
     private TemplateEngine templateEngine;
@@ -50,5 +52,25 @@ public class MailCreatorService {
         System.out.println(companyInfo.getCompanyPhone());
 
         return templateEngine.process("mail/created-trello-card-mail.html", context);
+    }
+    public String buildTaskQuantityEmail(String message){
+        List<String> company = new ArrayList<>();
+        company.add(companyInfo.getCompanyName());
+        company.add(companyInfo.getCompanyAddress());
+        company.add(companyInfo.getCompanyEmail());
+        company.add(companyInfo.getCompanyPhone());
+
+        Context context = new Context();
+        context.setVariable("message", message);
+        context.setVariable("task_quantity", "You have " + repository.count() + " tasks to perform");
+        context.setVariable("tasks_url", "http://localhost:8888/tasks_frontend/");
+        context.setVariable("button", "Visit Website");
+        context.setVariable("preview", "Number of tasks");
+        context.setVariable("goodbye", "Best Regards");
+        context.setVariable("company", company);
+        context.setVariable("show_button", true);
+        context.setVariable("is_friend", true);
+        context.setVariable("admin_config", adminConfig);
+        return templateEngine.process("mail/created-trello-scheduler.html", context);
     }
 }
