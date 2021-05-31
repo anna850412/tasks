@@ -10,6 +10,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @Slf4j
 @Service
@@ -29,25 +32,39 @@ public class SimpleEmailService {
             log.error("Failed to process email sending: " + e.getMessage(), e);
         }
     }
+    public void sendAmountOfTasksDailyMail(final Mail mail) {
+        log.info("Starting email preparation...");
+        try {
+            javaMailSender.send(createMimeMessageForQuantityOfTasks(mail));
+            log.info("Email has been sent");
+        } catch (MailException e) {
+            log.error("Failed to process email sending: ", e.getMessage(), e);
+        }
+    }
     private MimeMessagePreparator createMimeMessage(final Mail mail) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-//            messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
-            messageHelper.setText(mailCreatorService.buildTaskQuantityEmail(mail.getMessage()), true);
+            messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
         };
     }
+        private MimeMessagePreparator createMimeMessageForQuantityOfTasks(final Mail mail) {
+            return mimeMessage -> {
+                MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+                messageHelper.setTo(mail.getMailTo());
+                messageHelper.setSubject(mail.getSubject());
+                messageHelper.setText(mailCreatorService.buildTaskQuantityEmail(mail.getMessage()), true);
+            };
+    }
+    private SimpleMailMessage createMailMessage(final Mail mail) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(mail.getMailTo());
+        mailMessage.setSubject(mail.getSubject());
+        mailMessage.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()));
+        return mailMessage;
+    }
 
-
-//    private SimpleMailMessage createMailMessage(final Mail mail) {
-//        SimpleMailMessage mailMessage = new SimpleMailMessage();
-//        mailMessage.setTo(mail.getMailTo());
-//        mailMessage.setSubject(mail.getSubject());
-//        mailMessage.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()));
-//        mailMessage.setText(mailCreatorService.buildTaskQuantityEmail(mail.getMessage()));
-//        return mailMessage;
-//    }
 
 //    private SimpleMailMessage createMailMessage(final Mail mail) {
 //        SimpleMailMessage mailMessage = new SimpleMailMessage();

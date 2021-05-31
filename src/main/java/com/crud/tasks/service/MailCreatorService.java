@@ -23,6 +23,7 @@ public class MailCreatorService {
     @Autowired
     @Qualifier("templateEngine")
     private TemplateEngine templateEngine;
+    long numberOfTasks = repository.count();
 
     public String buildTrelloCardEmail(String message) {
         List<String> functionality = new ArrayList<>();
@@ -54,6 +55,16 @@ public class MailCreatorService {
         return templateEngine.process("mail/created-trello-card-mail.html", context);
     }
     public String buildTaskQuantityEmail(String message){
+        long numberOfTasks = repository.count();
+
+        List<String> zeroTaskFunctionality = new ArrayList<>();
+        zeroTaskFunctionality.add("There is no tasks in your list");
+
+        List<String> moreThenZeroTaskFunctionality = new ArrayList<>();
+        moreThenZeroTaskFunctionality.add("You can create tasks");
+        moreThenZeroTaskFunctionality.add("You can edit and delete tasks");
+        moreThenZeroTaskFunctionality.add("You can create card and assign it to a specific board and list");
+
         List<String> company = new ArrayList<>();
         company.add(companyInfo.getCompanyName());
         company.add(companyInfo.getCompanyAddress());
@@ -65,12 +76,19 @@ public class MailCreatorService {
         context.setVariable("task_quantity", "You have " + repository.count() + " tasks to perform");
         context.setVariable("tasks_url", "http://localhost:8888/tasks_frontend/");
         context.setVariable("button", "Visit Website");
-        context.setVariable("preview", "Number of tasks");
-        context.setVariable("goodbye", "Best Regards");
+        context.setVariable("preview", "Mail contains information about amount of tasks");
+        context.setVariable("goodbye", "The mail with information about amount of your tasks will be send tomorrow");
         context.setVariable("company", company);
         context.setVariable("show_button", true);
         context.setVariable("is_friend", true);
         context.setVariable("admin_config", adminConfig);
+        context.setVariable("zero_task_functions", zeroTaskFunctionality);
+        context.setVariable("more_then_zero_task_functions", moreThenZeroTaskFunctionality);
+        if (numberOfTasks == 0) {
+            context.setVariable("is_zero_tasks", true);
+        } else {
+            context.setVariable("is_zero_tasks", false);
+        }
         return templateEngine.process("mail/created-trello-scheduler.html", context);
     }
 }
